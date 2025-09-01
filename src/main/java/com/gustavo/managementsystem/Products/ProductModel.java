@@ -33,13 +33,4 @@ public class ProductModel {
         return this.name = name;
     }
 
-    public void update(Optional<String> name,Optional<String> description,Optional<Double> price, Optional<Integer> quantity) {
-
-        name.ifPresent(n -> this.name = n);
-        description.ifPresent(n -> this.description = n);
-        price.ifPresent(n -> this.price = n);
-        quantity.ifPresent(n -> this.quantity = n);
-
-    }
-
 }
