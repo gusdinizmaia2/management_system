@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.websocket.MessageHandler.Partial;
 
 @RestController
 @RequestMapping("/suppliers")
