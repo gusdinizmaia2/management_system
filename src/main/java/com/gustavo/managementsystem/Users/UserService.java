@@ -13,6 +13,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User createUser(User user){
+        return userRepository.save(user);
+    }
+
     // public Optional<User> listUserById(Long id){
     //     return userRepository.findById(id);
     // }
