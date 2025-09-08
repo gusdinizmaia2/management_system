@@ -1,6 +1,10 @@
 package com.gustavo.managementsystem.Suppliers;
 
 
+import java.util.List;
+
+import com.gustavo.managementsystem.Products.Product;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,5 +27,9 @@ public class Supplier{
 
     @Column(nullable = false)
     private String address;
+
+    @OneToMany(mappedBy = "products")
+    @JoinColumn(name = "products")
+    private List<Product> products;
 
 }

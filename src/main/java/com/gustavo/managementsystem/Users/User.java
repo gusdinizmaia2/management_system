@@ -3,6 +3,10 @@ package com.gustavo.managementsystem.Users;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
+import com.gustavo.managementsystem.InventoryMovements.InventoryMovement;
+
 @Data
 @Entity(name="users")
 public class User {
@@ -20,6 +24,10 @@ public class User {
     private String password;
 
     @Column()
-    private Boolean is_admin;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    @OneToMany(mappedBy = "inventory_movements")
+    private List<InventoryMovement> inventory_movements;
 
 }

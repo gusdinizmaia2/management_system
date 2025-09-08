@@ -3,6 +3,11 @@ package com.gustavo.managementsystem.Products;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
+import com.gustavo.managementsystem.InventoryMovements.InventoryMovement;
+import com.gustavo.managementsystem.Suppliers.Supplier;
+
 @Data
 @Entity(name="products")
 public class Product {
@@ -22,5 +27,12 @@ public class Product {
 
     @Column(nullable = false)
     private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
+
+    @OneToMany(mappedBy = "inventory_movements")
+    private List<InventoryMovement> inventory_movements;
 
 }
