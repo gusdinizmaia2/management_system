@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Data
-@Entity
 public class InventoryMovementCreateDTO{
 
     @NotBlank

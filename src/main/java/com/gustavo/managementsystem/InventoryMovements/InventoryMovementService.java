@@ -3,8 +3,10 @@ import java.lang.annotation.*;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-class InventoryMovementService{
+@Service
+public class InventoryMovementService{
 
     @Autowired
     private InventoryMovementRepository inventoryMovementRepository;

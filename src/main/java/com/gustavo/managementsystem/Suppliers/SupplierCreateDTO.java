@@ -5,14 +5,12 @@ import java.util.List;
 
 import com.gustavo.managementsystem.Products.Product;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-@Entity(name="suppliers")
 public class SupplierCreateDTO{
 
     @NotBlank
