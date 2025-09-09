@@ -19,5 +19,6 @@ public class UserCreateDTO{
     @Size(min = 8)
     private String password;
 
-    private Boolean is_admin;
+    @NotNull
+    private UserRole role;
 }
