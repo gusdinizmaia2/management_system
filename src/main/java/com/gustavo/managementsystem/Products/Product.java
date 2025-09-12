@@ -32,7 +32,7 @@ public class Product {
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
-    @OneToMany(mappedBy = "inventory_movements")
+    @OneToMany(mappedBy = "product")
     private List<InventoryMovement> inventory_movements;
 
 }

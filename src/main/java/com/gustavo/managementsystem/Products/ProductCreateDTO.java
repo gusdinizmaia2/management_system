@@ -1,7 +1,9 @@
 package com.gustavo.managementsystem.Products;
 
 import jakarta.validation.constraints.*;
+import lombok.Data;
 
+@Data
 public class ProductCreateDTO {
     
     @NotNull

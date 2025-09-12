@@ -28,8 +28,7 @@ public class Supplier{
     @Column(nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "products")
-    @JoinColumn(name = "products")
+    @OneToMany(mappedBy = "supplier")
     private List<Product> products;
 
 }

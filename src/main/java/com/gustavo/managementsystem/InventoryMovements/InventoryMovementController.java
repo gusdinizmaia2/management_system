@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-class InventoryMovementController{
+@RequestMapping("/inventory_movements")
+public class InventoryMovementController{
 
     @Autowired
     private InventoryMovementService inventoryMovementService;
