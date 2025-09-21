@@ -24,9 +24,11 @@ public class UserController {
     private ModelMapper modelMapper;
 
     @PostMapping
-    public UserDTO postUser(@Valid @RequestBody User body){
+    public UserDTO postUser(@Valid @RequestBody UserCreateDTO body){
 
-        User user = userService.createUser(body);
+        var userEntity = modelMapper.map(body, User.class); 
+
+        var user = userService.createUser(userEntity);
     
         return modelMapper.map(user, UserDTO.class) ;
     }
