@@ -2,6 +2,7 @@ package com.gustavo.managementsystem.Users;
 
 import java.lang.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.catalina.connector.Response;
 import org.modelmapper.ModelMapper;
@@ -38,6 +39,32 @@ public class UserController {
         UserDTO[] usersDTO = modelMapper.map(users,UserDTO[].class);
 
         return usersDTO;
+    }
+
+    @GetMapping
+    public UserDTO getUserById(@PathVariable Long userId){
+
+        var user = userService.listUserById(userId);
+
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+
+        return userDTO;
+    }
+
+    @PatchMapping
+    public UserDTO patchUser(@PathVariable Long userId,@Valid @RequestBody Map<String,String> body){
+        
+        var user = userService.patchUserById(userId, body);
+
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+
+        return userDTO;
+    }
+
+    @DeleteMapping
+    public void deleteById(@RequestParam Long userId){
+
+        userService.deleteUser(userId);
     }
 
 
