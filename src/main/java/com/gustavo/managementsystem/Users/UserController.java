@@ -30,15 +30,15 @@ public class UserController {
     }
 
     @GetMapping
-    public UserDTO[] getAllUsers(){
+    public List<User> getAllUsers(){
         List<User> users =  userService.listAllUsers();
 
-        UserDTO[] usersDTO = modelMapper.map(users,UserDTO[].class);
+        // UserDTO[] usersDTO = modelMapper.map(users,UserDTO[].class);
 
-        return usersDTO;
+        return users;
     }
 
-    @GetMapping
+    @GetMapping("/{userId}")
     public UserDTO getUserById(@PathVariable Long userId){
 
         var user = userService.listUserById(userId);
@@ -48,7 +48,7 @@ public class UserController {
         return userDTO;
     }
 
-    @PatchMapping
+    @PatchMapping("/{userId}")
     public UserDTO patchUser(@PathVariable Long userId,@Valid @RequestBody Map<String,String> body){
         
         var user = userService.patchUserById(userId, body);
@@ -58,8 +58,8 @@ public class UserController {
         return userDTO;
     }
 
-    @DeleteMapping
-    public void deleteById(@RequestParam Long userId){
+    @DeleteMapping("/{userId}")
+    public void deleteById(@PathVariable Long userId){
 
         userService.deleteUser(userId);
     }

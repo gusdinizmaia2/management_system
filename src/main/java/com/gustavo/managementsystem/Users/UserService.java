@@ -1,6 +1,5 @@
 package com.gustavo.managementsystem.Users;
 
-import java.lang.classfile.ClassFile.Option;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,6 +34,8 @@ public class UserService {
         body.forEach((key, value) -> {
             switch (key) {
                 case "username" -> user.setUsername(value);
+                case "email" -> user.setEmail(value);
+                case "password" -> user.setPassword(value);
             }
         });
 

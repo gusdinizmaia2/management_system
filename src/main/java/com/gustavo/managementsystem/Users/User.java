@@ -11,16 +11,16 @@ import com.gustavo.managementsystem.InventoryMovements.InventoryMovement;
 @Entity(name="users")
 public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(nullable = false, length = 3)
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 8)
+    @Column(nullable = false)
     private String password;
 
     @Column()
