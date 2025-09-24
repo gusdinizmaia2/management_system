@@ -25,4 +25,12 @@ public class JwtConfig {
         return secretKey;
     }
 
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public long getExpiresInMs() {
+        return expiresInMs;
+    }
+
 }
