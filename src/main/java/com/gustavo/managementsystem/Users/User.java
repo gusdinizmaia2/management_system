@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.gustavo.managementsystem.InventoryMovements.InventoryMovement;
 
@@ -11,8 +14,9 @@ import com.gustavo.managementsystem.InventoryMovements.InventoryMovement;
 @Entity(name="users")
 public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy=GenerationType.UUID)
+    @Column(name="id")
+    private UUID userId;
 
     @Column(nullable = false, length = 3)
     private String username;
@@ -29,5 +33,21 @@ public class User {
 
     @OneToMany(mappedBy = "owner_user")
     private List<InventoryMovement> inventory_movements;
+
+    public boolean isLoginCorrect(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(loginRequest.password(), this.password);
+    }
+
+     public UUID getUserId() {
+        return userId;
+    }
+    
+    public String getRole(){
+        return role.toString();
+    }
+
+    // public void setRole(UserRole newRole){
+    //     role = newRole;
+    // }
 
 }
