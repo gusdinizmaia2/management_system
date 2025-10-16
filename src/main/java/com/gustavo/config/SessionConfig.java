@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.gustavo.managementsystem.Users.UserRepository;
 
-public class SessionsConfig {
+public class SessionConfig {
     
     @Bean
     UserDetailsService userDetailsService(UserRepository userRepo){
