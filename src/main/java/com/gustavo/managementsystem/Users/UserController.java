@@ -3,12 +3,14 @@ package com.gustavo.managementsystem.Users;
 import java.lang.annotation.*;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -20,24 +22,24 @@ import jakarta.validation.Valid;
 @RequestMapping("/users")
 public class UserController {
     
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    
+    public UserController(UserRepository userRepository,
+    BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Autowired
     private UserService userService;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
-
-    public UserController(UserRepository userRepository,
-                          BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @Transactional
-    @PostMapping("/users")
-    public ResponseEntity<Void> postUser(@RequestBody UserCreateDTO dto) {
+    @PostMapping
+    public ResponseEntity<User> postUser(@Valid @RequestBody UserCreateDTO dto) {
 
         var userFromDb = userRepository.findByUsername(dto.username());
         if (userFromDb.isPresent()) {
@@ -50,12 +52,13 @@ public class UserController {
         user.setEmail(dto.email());
         user.setRole(dto.role());
 
-        userRepository.save(user);
+        var newUser = userRepository.save(user);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(newUser);
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public UserDTO[] getAllUsers(){
         List<User> users =  userService.listAllUsers();
 
@@ -64,8 +67,8 @@ public class UserController {
         return usersDTO;
     }
 
-    @GetMapping
-    public UserDTO getUserById(@PathVariable Long userId){
+    @GetMapping("/{userId}")
+    public UserDTO getUserById(@PathVariable UUID userId){
 
         var user = userService.listUserById(userId);
 
@@ -74,8 +77,8 @@ public class UserController {
         return userDTO;
     }
 
-    @PatchMapping
-    public UserDTO patchUser(@PathVariable Long userId,@Valid @RequestBody Map<String,String> body){
+    @PatchMapping("/{userId}")
+    public UserDTO patchUser(@PathVariable UUID userId,@Valid @RequestBody Map<String,String> body){
         
         var user = userService.patchUserById(userId, body);
 
@@ -84,8 +87,8 @@ public class UserController {
         return userDTO;
     }
 
-    @DeleteMapping
-    public void deleteById(@RequestParam Long userId){
+    @DeleteMapping("/{userId}")
+    public void deleteById(@RequestParam UUID userId){
 
         userService.deleteUser(userId);
     }

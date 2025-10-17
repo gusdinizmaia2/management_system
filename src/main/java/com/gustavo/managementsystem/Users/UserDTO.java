@@ -1,10 +1,12 @@
 package com.gustavo.managementsystem.Users;
 
+import java.util.UUID;
+
 import lombok.Data;
 
 @Data
 public class UserDTO {
-    private Long id;
+    private UUID id;
     private String username;
     private String email;
     private UserRole role;
@@ -23,10 +25,10 @@ public class UserDTO {
         this.email = email;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
