@@ -15,16 +15,16 @@ import com.gustavo.managementsystem.InventoryMovements.InventoryMovement;
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.UUID)
-    @Column(name="id")
+    @Column(name="id", unique = true)
     private UUID userId;
 
-    @Column(nullable = false, length = 3)
+    @Column(nullable = false, length=30)
     private String username;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 8)
+    @Column(nullable = false, length = 16)
     private String password;
 
     @Column(nullable = false)
