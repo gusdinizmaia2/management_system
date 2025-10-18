@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.PrintStream;
 import java.time.Instant;
+import java.util.List;
 
 @RestController
 public class TokenController {
@@ -39,15 +41,18 @@ public class TokenController {
         var now = Instant.now();
         var expiresIn = 300L;
 
-        var role = user.get().getRole();
+        var role = user.get().getRole().name();
 
         var claims = JwtClaimsSet.builder()
                 .issuer("mybackend")
                 .subject(user.get().getUserId().toString())
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiresIn))
-                .claim("ROLE", role)
+                // .claim("SCOPE", role)
+                .claim("scope", role)
                 .build();
+
+                // System.out.println((String)claims.getClaim("scope"));
 
         var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 

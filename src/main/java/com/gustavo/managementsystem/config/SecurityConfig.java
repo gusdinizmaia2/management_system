@@ -43,7 +43,6 @@ public class SecurityConfig {
     }
     
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -52,6 +51,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .anyRequest().authenticated())
+                        // .anyRequest().permitAll())
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
             .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
