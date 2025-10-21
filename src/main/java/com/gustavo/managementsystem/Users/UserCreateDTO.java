@@ -1,8 +1,15 @@
 package com.gustavo.managementsystem.Users;
+import java.util.Enumeration;
+import java.util.UUID;
+
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
-@Data
+
+// public record UserCreateDTO(String username, String password, UserRole role, String email) {
+// }
+
+@Data 
 public class UserCreateDTO{
     @NotBlank
     @NotNull
@@ -16,9 +23,25 @@ public class UserCreateDTO{
 
     @NotNull
     @NotBlank
-    @Size(min = 8)
+    @Size(min = 4, max = 16)
     private String password;
 
     @NotNull
     private UserRole role;
+
+    public String username() {
+        return username;
+    }
+    
+    public String password(){
+        return password;
+    }
+
+    public String email(){
+        return email;
+    }
+    
+    public UserRole role(){
+        return role;
+    }
 }
