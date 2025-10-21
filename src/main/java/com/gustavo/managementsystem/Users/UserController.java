@@ -8,11 +8,15 @@ import java.util.UUID;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Authentication;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -59,8 +63,8 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public UserDTO[] getAllUsers(@RequestParam  JwtAuthenticationToken token){
+    @PreAuthorize("@authGuard.isAdmin(authentication)")
+    public UserDTO[] getAllUsers(){
         // System.out.println(token);
         List<User> users =  userService.listAllUsers();
 
@@ -70,9 +74,10 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN') && authentication.principal.id == #userId")
-    // @PreAuthorize("@securityService.userOwner(authentication, #id)")
-    public UserDTO getUserById(@PathVariable UUID userId){
+    @PreAuthorize("@authGuard.canAccessUser(authentication, #userId)")
+    // @PreAuthorize("authentication.principal.claims[''] == '35c836ae-3d5b-427e-a738-32ac7f414cf4'")
+    // @PreAuthorize("")
+    public UserDTO getUserById(@PathVariable UUID userId, @AuthenticationPrincipal Jwt jwt){
 
         var user = userService.listUserById(userId);
 
@@ -81,8 +86,8 @@ public class UserController {
         return userDTO;
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @PatchMapping("/{userId}")
+    @PreAuthorize("@authGuard.canAccessUser(authentication, #userId)")
     public UserDTO patchUser(@PathVariable UUID userId,@Valid @RequestBody Map<String,String> body){
         
         var user = userService.patchUserById(userId, body);
@@ -92,8 +97,9 @@ public class UserController {
         return userDTO;
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @DeleteMapping("/{userId}")
+    // @PreAuthorize("hasAuthority('SCOPE_ADMIN') || authentication.principal.subject.toString() == #userId.toString()")
+    @PreAuthorize("@authGuard.canAccessUser(authentication, #userId)")
     public void deleteById(@RequestParam UUID userId){
 
         userService.deleteUser(userId);
