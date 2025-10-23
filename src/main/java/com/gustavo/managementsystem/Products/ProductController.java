@@ -22,10 +22,11 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/products")
-@PreAuthorize("")
 public class ProductController {
     
+    @Autowired
     private ProductService productService;
+    @Autowired
     private UserService userService;
     @Autowired
     private ModelMapper modelMapper;
@@ -34,7 +35,11 @@ public class ProductController {
     @PreAuthorize("@authGuard.isAdmin(authentication)")
     public List<Product> getAllProducts(){
 
-        return productService.findAllProducts();
+        var listProducts = productService.findAllProducts();
+
+        // var newList = modelMapper.map(listProducts, Product[].class);
+
+        return listProducts;
     }
 
     @GetMapping()
@@ -50,10 +55,13 @@ public class ProductController {
     @PreAuthorize("@authGuard.isSupplier(authentication)")
     public Product postProduct(@Valid @RequestBody ProductCreateDTO payload, Authentication authentication) {
 
-        var user = userService.listUserById(UUID.fromString(authentication.getName())).
+        var userUUID = UUID.fromString(authentication.getName());
+
+        var user = userService.listUserById(userUUID).
             orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         var productFromDb = productService.findProductByName(payload.getName());
+
         if (productFromDb.isPresent() && productFromDb.get().getSupplier().getId() == user.getId()) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
         }

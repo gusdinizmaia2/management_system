@@ -3,6 +3,7 @@ package com.gustavo.managementsystem.util;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import com.gustavo.managementsystem.Products.ProductRepository;
 @Component("authGuard")
 public class AuthGuard {
 
+    @Autowired
     private ProductRepository productRepository;
 
     public boolean isAdmin(Authentication authentication) {

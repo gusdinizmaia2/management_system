@@ -19,15 +19,12 @@ public class ProductCreateDTO {
     @Positive
     @DecimalMin(value = "0.00")
     @NotNull
-    @NotBlank
     private double price;
 
     @Positive
-    @NotBlank
     @NotNull
     private int quantity;
 
-    private User supplier;
 
     // @Positive
     // @NotBlank

@@ -1,5 +1,7 @@
 package com.gustavo.managementsystem.Products;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,7 +18,13 @@ public class ProductService {
 
     public List<Product> findAllProducts(){
 
-        return productRepository.findAll();
+        var products = productRepository.findAll();
+
+        // if(products.isEmpty()){
+        //     return Collections.emptyList();
+        // }
+
+        return products;
     }
 
     public Optional<Product> findAllProductsForSupplier(String supplier){

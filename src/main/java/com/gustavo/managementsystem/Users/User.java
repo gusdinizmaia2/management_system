@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gustavo.managementsystem.InventoryMovements.InventoryMovement;
 import com.gustavo.managementsystem.Products.Product;
 
@@ -35,6 +36,7 @@ public class User {
     @OneToMany(mappedBy = "owner_user")
     private List<InventoryMovement> inventory_movements;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "supplier")
     private List<Product> products_owner;
 
