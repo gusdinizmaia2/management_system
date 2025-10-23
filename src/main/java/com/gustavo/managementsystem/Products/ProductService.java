@@ -21,11 +21,22 @@ public class ProductService {
 
     public Optional<Product> findAllProductsForSupplier(String supplier){
 
-        return productRepository.findProductsForSupplier(supplier);
+        var formatUUID = UUID.fromString(supplier);
+
+        return productRepository.findAllBySupplier_Id(formatUUID);
     }
  
-    public Optional<Product> findProduct(Long productId){
+    public Optional<Product> findProductById(Long productId){
         return productRepository.findById(productId);
+    }
+
+    public Optional<Product> findProductByName(String productName){
+        return productRepository.findByName(productName);
+    }
+
+    public Product createProduct(Product body){
+
+        return productRepository.save(body);
     }
 
     public Optional<Product> updateProduct(Long productId, Map<String,String> body){

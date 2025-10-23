@@ -1,5 +1,7 @@
 package com.gustavo.managementsystem.Products;
 
+import com.gustavo.managementsystem.Users.User;
+
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -25,8 +27,10 @@ public class ProductCreateDTO {
     @NotNull
     private int quantity;
 
-    @Positive
-    @NotBlank
-    @NotNull
-    private int supplier_id;
+    private User supplier;
+
+    // @Positive
+    // @NotBlank
+    // @NotNull
+    // private int supplier_id;
 }

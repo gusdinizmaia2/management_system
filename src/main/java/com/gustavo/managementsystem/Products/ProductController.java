@@ -7,8 +7,16 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.ModelMap;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.gustavo.managementsystem.Users.UserService;
+import com.gustavo.managementsystem.util.ModelMapperConfig;
 
 import jakarta.validation.Valid;
 
@@ -18,9 +26,12 @@ import jakarta.validation.Valid;
 public class ProductController {
     
     private ProductService productService;
+    private UserService userService;
+    @Autowired
+    private ModelMapper modelMapper;
 
-    @PreAuthorize("@authGuard.isAdmin(authentication)")
     @GetMapping("/all")
+    @PreAuthorize("@authGuard.isAdmin(authentication)")
     public List<Product> getAllProducts(){
 
         return productService.findAllProducts();
@@ -37,9 +48,22 @@ public class ProductController {
 
     @PostMapping()
     @PreAuthorize("@authGuard.isSupplier(authentication)")
-    public List<Product> postProduct(){
+    public Product postProduct(@Valid @RequestBody ProductCreateDTO payload, Authentication authentication) {
 
-        return productService.findAllProducts();
+        var user = userService.listUserById(UUID.fromString(authentication.getName())).
+            orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        var productFromDb = productService.findProductByName(payload.getName());
+        if (productFromDb.isPresent() && productFromDb.get().getSupplier().getId() == user.getId()) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        
+        
+        Product newProduct = modelMapper.map(payload, Product.class);
+
+        newProduct.setSupplier(user);
+
+        return productService.createProduct(newProduct);
     }
 
     @GetMapping("/{productId}")
@@ -47,7 +71,7 @@ public class ProductController {
     public Optional<Product> getProduct(@PathVariable Long productId){
 
 
-        return productService.findProduct(productId);
+        return productService.findProductById(productId);
     }
 
     @PatchMapping("/{productId}")

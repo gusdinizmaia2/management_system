@@ -4,21 +4,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.gustavo.managementsystem.Products.Product;
 import com.gustavo.managementsystem.Products.ProductRepository;
-import com.gustavo.managementsystem.Users.User;
-import com.gustavo.managementsystem.Users.UserRepository;
 
 @Component("authGuard")
 public class AuthGuard {
 
     private ProductRepository productRepository;
-    private UserRepository userRepository;
 
     public boolean isAdmin(Authentication authentication) {
         return authentication.getAuthorities().stream()
@@ -44,7 +40,7 @@ public class AuthGuard {
         String userId = authentication.getName(); 
         Optional<Product> product = productRepository.findById(productId);
 
-        if(product == null){
+        if(!product.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 

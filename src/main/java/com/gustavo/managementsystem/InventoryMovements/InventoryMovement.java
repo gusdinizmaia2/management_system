@@ -2,10 +2,6 @@ package com.gustavo.managementsystem.InventoryMovements;
 
 import lombok.Data;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-
-import java.lang.annotation.ElementType;
-
 import com.gustavo.managementsystem.Products.Product;
 import com.gustavo.managementsystem.Users.User;
 

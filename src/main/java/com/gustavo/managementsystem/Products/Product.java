@@ -6,7 +6,6 @@ import lombok.Data;
 import java.util.List;
 
 import com.gustavo.managementsystem.InventoryMovements.InventoryMovement;
-import com.gustavo.managementsystem.Suppliers.Supplier;
 import com.gustavo.managementsystem.Users.User;
 
 @Data
@@ -30,7 +29,8 @@ public class Product {
     private int quantity;
 
     @ManyToOne
-    @JoinColumn(name = "supplier_id")
+    // @JoinColumn(name = "supplier_id", referencedColumnName = "id", unique=false)
+    @JoinColumn(name = "supplier")
     private User supplier;
 
     @OneToMany(mappedBy = "product")
@@ -52,6 +52,10 @@ public class Product {
     
     public void setDescription(String description){
         this.description = description;
+    }
+
+    public void setSupplier(User user){
+        this.supplier = user;
     }
 
 }
