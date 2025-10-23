@@ -1,6 +1,9 @@
 package com.gustavo.managementsystem.InventoryMovements;
 
 import lombok.Data;
+
+import com.gustavo.managementsystem.Products.Product;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -19,7 +22,7 @@ public class InventoryMovementCreateDTO{
     @NotEmpty
     private String date;
 
-    @NotEmpty
-    @NotBlank
-    private Integer product_id;
+    // @NotEmpty
+    // @NotBlank
+    // private Product product;
 }
