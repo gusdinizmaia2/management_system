@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 import com.gustavo.managementsystem.InventoryMovements.InventoryMovement;
-import com.gustavo.managementsystem.Suppliers.Supplier;
+import com.gustavo.managementsystem.Users.User;
 
 @Data
 @Entity(name="products")
@@ -29,10 +29,33 @@ public class Product {
     private int quantity;
 
     @ManyToOne
-    @JoinColumn(name = "supplier_id")
-    private Supplier supplier;
+    // @JoinColumn(name = "supplier_id", referencedColumnName = "id", unique=false)
+    @JoinColumn(name = "supplier")
+    private User supplier;
 
     @OneToMany(mappedBy = "product")
     private List<InventoryMovement> inventory_movements;
+
+    public User getSupplier(){
+        return this.supplier;
+    }
+
+    public void setPrice(double price){
+        this.price = price;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setQuantity(int quantity){
+        this.quantity = quantity;
+    }
+    
+    public void setDescription(String description){
+        this.description = description;
+    }
+
+    public void setSupplier(User user){
+        this.supplier = user;
+    }
 
 }

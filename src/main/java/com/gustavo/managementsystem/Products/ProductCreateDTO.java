@@ -1,5 +1,7 @@
 package com.gustavo.managementsystem.Products;
 
+import com.gustavo.managementsystem.Users.User;
+
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -17,16 +19,15 @@ public class ProductCreateDTO {
     @Positive
     @DecimalMin(value = "0.00")
     @NotNull
-    @NotBlank
     private double price;
 
     @Positive
-    @NotBlank
     @NotNull
     private int quantity;
 
-    @Positive
-    @NotBlank
-    @NotNull
-    private int supplier_id;
+
+    // @Positive
+    // @NotBlank
+    // @NotNull
+    // private int supplier_id;
 }
