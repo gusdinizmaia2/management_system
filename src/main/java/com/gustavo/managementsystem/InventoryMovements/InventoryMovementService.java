@@ -34,20 +34,27 @@ public class InventoryMovementService{
         return inventoryMovementRepository.findAll();
     }
 
-    public List<InventoryMovement> findAllMovements(long productId, UUID supplierId){
+    public List<InventoryMovement> findAllMovements(String productId, String supplierId){
 
-        var productString = Long.toString(productId);
+        if(productId == null && supplierId == null ){
+            
+            return inventoryMovementRepository.findAll();     
+        }
+        else if (productId == null){
+            UUID supplierUUID = UUID.fromString(supplierId);
+            return inventoryMovementRepository.findAllByOwnerUser_Id(supplierUUID);
 
-        if(productString==null && supplierId==null ){
-             return inventoryMovementRepository.findAllInventoryMovementsByOwnerUser_Id(supplierId);
         }
-        else if (supplierId!=null ){
-            return inventoryMovementRepository.findAllInventoryMovementsByOwnerUser_IdAndProduct_Id(productId, supplierId);
-        }
-        else if(productString != null){
-            return inventoryMovementRepository.findAllInventoryMovementsByProduct_Id(productId);
+        else if(supplierId == null){
+            long productLong = Long.parseLong(productId);
+            return inventoryMovementRepository.findAllByProduct_Id(productLong);
         }
 
+        long productLong = Long.parseLong(productId);
+        UUID supplierUUID = UUID.fromString(supplierId);
+
+
+        // return inventoryMovementRepository.findAllByOwnerUser_IdAndProduct_Id(productId, supplierId);
         return inventoryMovementRepository.findAll();
 
     }

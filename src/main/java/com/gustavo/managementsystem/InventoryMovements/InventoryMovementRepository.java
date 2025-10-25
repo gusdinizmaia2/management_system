@@ -9,19 +9,19 @@ import org.springframework.data.repository.query.Param;
 
 public interface InventoryMovementRepository extends JpaRepository<InventoryMovement, Long> {
     //Optional<InventoryMovement> findById(Long id);3
-    @Query("select mov from inventory_movements mov where mov.product_id = :product_id")
-    List<InventoryMovement> findInventoryMovementsByOwnerUser_Id(UUID owner_user, 
+    @Query("select mov from inventory_movements mov where mov.product.id = :product_id")
+    List<InventoryMovement> findByOwnerUser_Id(UUID owner_user, 
         @Param("product_id") long productId);
 
     @Query("select mov from inventory_movements mov where mov.owner_user.id = :owner_user_id")
-    List<InventoryMovement> findAllInventoryMovementsByOwnerUser_Id(@Param("owner_user_id") UUID ownerUserId);
+    List<InventoryMovement> findAllByOwnerUser_Id(@Param("owner_user_id") UUID ownerUserId);
 
     @Query("select mov from inventory_movements mov where mov.product.id = :product_id")
-    List<InventoryMovement> findAllInventoryMovementsByProduct_Id(@Param("product_id") long productId);
+    List<InventoryMovement> findAllByProduct_Id(@Param("product_id") long productId);
 
-    @Query("select mov from inventory_movements mov where mov.product.id = :product_id" +
-    " and " + 
-    "mov.owner_user.id = :owner_user_id")
-    List<InventoryMovement> findAllInventoryMovementsByOwnerUser_IdAndProduct_Id(@Param("product_id") long productId,
-        @Param("owner_user_id") UUID ownerUserId);
+    // @Query("select mov from inventory_movements mov where mov.product.id = :product_id" +
+    // " and " + 
+    // "mov.owner_user.id = :owner_user_id")
+    // List<InventoryMovement> findAllByOwnerUser_IdAndProduct_Id(@Param("product_id") long productId,
+    //     @Param("owner_user_id") UUID ownerUserId);
 }
