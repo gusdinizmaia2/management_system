@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gustavo.managementsystem.InventoryMovements.InventoryMovement;
 import com.gustavo.managementsystem.Users.User;
 
@@ -13,7 +14,7 @@ import com.gustavo.managementsystem.Users.User;
 public class Product {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(nullable = false)
@@ -29,11 +30,12 @@ public class Product {
     private int quantity;
 
     @ManyToOne
-    // @JoinColumn(name = "supplier_id", referencedColumnName = "id", unique=false)
+    @JsonIgnore
     @JoinColumn(name = "supplier")
     private User supplier;
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<InventoryMovement> inventory_movements;
 
     public User getSupplier(){

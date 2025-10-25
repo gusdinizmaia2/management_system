@@ -1,5 +1,6 @@
 package com.gustavo.managementsystem.InventoryMovements;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -26,8 +27,36 @@ public class InventoryMovementService{
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<InventoryMovement> findAllInventoryMovements(){
+    public List<InventoryMovement> findMovementsBySupplier(long productId, int quantity, String supplierId){
+
+        var supplierUUID = UUID.fromString(supplierId);
+
         return inventoryMovementRepository.findAll();
+    }
+
+    public List<InventoryMovement> findAllMovements(long productId, UUID supplierId){
+
+        var productString = Long.toString(productId);
+
+        if(productString==null && supplierId==null ){
+             return inventoryMovementRepository.findAllInventoryMovementsByOwnerUser_Id(supplierId);
+        }
+        else if (supplierId!=null ){
+            return inventoryMovementRepository.findAllInventoryMovementsByOwnerUser_IdAndProduct_Id(productId, supplierId);
+        }
+        else if(productString != null){
+            return inventoryMovementRepository.findAllInventoryMovementsByProduct_Id(productId);
+        }
+
+        return inventoryMovementRepository.findAll();
+
+    }
+
+    public InventoryMovement findMovementById(long movementId){
+        var foundMovement = inventoryMovementRepository.findById(movementId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movement not found"));
+
+        return foundMovement;
     }
 
     public InventoryMovement updateCountInventory(InventoryMovementCreateDTO payload,long productId, String userId){
@@ -35,7 +64,7 @@ public class InventoryMovementService{
         var userUUID = UUID.fromString(userId);
 
         var product = productRepository.findById(productId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
         var user = userRepository.findById(userUUID)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
@@ -46,7 +75,9 @@ public class InventoryMovementService{
         switch (payload.getType()) {
             case ENTRY:
 
-                product.setQuantity( productQuantity + movementQuantity);
+                var entryQuantity = productQuantity + movementQuantity;
+
+                product.setQuantity(entryQuantity);
 
                 break;
         
@@ -54,19 +85,21 @@ public class InventoryMovementService{
 
                 if(productQuantity < movementQuantity){
                     throw new ResponseStatusException(HttpStatus.CONFLICT);
-                }
+                }   
 
-                product.setQuantity(productQuantity - movementQuantity);
+                var outputQuantity = productQuantity - movementQuantity;
+
+                product.setQuantity(outputQuantity);
 
                 break;
         }
-
-        productRepository.save(product);
-
+        
         InventoryMovement newMovement = modelMapper.map(payload, InventoryMovement.class);
-
+        
         newMovement.setProduct(product);
         newMovement.setOwner_user(user);
+        
+        productRepository.save(product);
 
         return inventoryMovementRepository.save(newMovement);
     }

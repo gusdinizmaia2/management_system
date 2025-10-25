@@ -2,6 +2,7 @@ package com.gustavo.managementsystem.InventoryMovements;
 
 import java.lang.annotation.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/products/{productId}")
+@RequestMapping("/movements")
 public class InventoryMovementController{
 
     @Autowired
     private InventoryMovementService inventoryMovementService;
 
-    @PostMapping("/movement")
+    @PostMapping("/movements/products/{productId}")
     @PreAuthorize("@authGuard.isSupplierOwner(authentication, #productId)")
     public InventoryMovement movementProduct(@PathVariable long productId,@Valid @RequestBody InventoryMovementCreateDTO body, Authentication authentication){
        
@@ -26,19 +27,37 @@ public class InventoryMovementController{
        
         return inventoryMovementService.updateCountInventory(body, productId, userId);
     }
-
-    // adicionar query params, (product and type)
-    @GetMapping("/movement")
+    
+    @GetMapping("/movements/{movementId}/products/{productId}")
     @PreAuthorize("@authGuard.isSupplierOwner(authentication, #productId)")
-    public List<InventoryMovement> getAllMovementsForSupplier(@PathVariable long productId){
-        return inventoryMovementService.findAllInventoryMovements();
+    public InventoryMovement getMovementById(@PathVariable long productId){
+        return inventoryMovementService.findMovementById(productId);
     }
 
-    // adicionar query params
-    @GetMapping("/movement/all")
+    // add query params(product, type), this route is for supplier 
+    @GetMapping("")
+    @PreAuthorize("@authGuard.isSupplier(authentication)")
+    public List<InventoryMovement> getAllMovementsForSupplier(
+        @RequestParam(required = false) long productId,
+        @RequestParam(required = false) int quantity,
+        Authentication authentication
+        ){
+
+        String supplierId = authentication.getName();
+
+
+        return inventoryMovementService.findMovementsBySupplier(productId, quantity, supplierId);
+    }
+
+    // add query params(product, type), this route is for Admin
+    @GetMapping("/movements/all")
     @PreAuthorize("@authGuard.isAdmin(authentication)")
-    public List<InventoryMovement> getAllMovements(@PathVariable long productId){
-        return inventoryMovementService.findAllInventoryMovements();
+    public List<InventoryMovement> getAllMovements(
+        @RequestParam(required = false) long productId,
+        @RequestParam(required = false) UUID supplierId
+        ){
+
+        return inventoryMovementService.findAllMovements(productId, supplierId);
     }
 
 }

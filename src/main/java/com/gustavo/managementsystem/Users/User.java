@@ -33,6 +33,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "owner_user")
     private List<InventoryMovement> inventory_movements;
 
