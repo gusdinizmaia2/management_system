@@ -7,6 +7,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
@@ -46,7 +50,20 @@ public class InventoryMovementController{
         return inventoryMovementService.findMovementsBySupplier(productId, supplierId);
     }
 
-
+    @Operation(
+        summary = "List All Products",
+        description = "Only admins can to access this route to view products",
+        security = { @SecurityRequirement(name = "bearer-key") },
+        parameters = {
+            @Parameter(name = "supplierId", description = "Id by Supplier"),
+            @Parameter(name = "productId", description = "specific id by product")
+        },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "List returned"),
+            @ApiResponse(responseCode = "403", description = "Less Access"),
+            @ApiResponse(responseCode = "404", description = "Supplier Not Found")
+        }
+    )
     @GetMapping("/all")
     @PreAuthorize("@authGuard.isAdmin(authentication)")
     public List<InventoryMovement> getAllMovements(
