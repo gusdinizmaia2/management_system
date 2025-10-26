@@ -26,8 +26,49 @@ public class InventoryMovementService{
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<InventoryMovement> findAllInventoryMovements(){
-        return inventoryMovementRepository.findAll();
+    public List<InventoryMovement> findMovementsBySupplier(String productId, String supplierId){
+
+        var supplierUUID = UUID.fromString(supplierId);
+
+        if(productId == null){
+            return inventoryMovementRepository.findAllByOwnerUser_Id(supplierUUID);
+        }
+
+        long productLong = Long.parseLong(productId);
+
+        return inventoryMovementRepository.findAllByOwnerUser_IdAndProduct_Id(productLong, supplierUUID);
+    }
+
+    public List<InventoryMovement> findAllMovements(String productId, String supplierId){
+
+        if(productId == null && supplierId == null ){
+            
+            return inventoryMovementRepository.findAll();     
+        }
+        else if (productId == null){
+            UUID supplierUUID = UUID.fromString(supplierId);
+            return inventoryMovementRepository.findAllByOwnerUser_Id(supplierUUID);
+
+        }
+        else if(supplierId == null){
+            long productLong = Long.parseLong(productId);
+            return inventoryMovementRepository.findAllByProduct_Id(productLong);
+        }
+
+        long productLong = Long.parseLong(productId);
+        UUID supplierUUID = UUID.fromString(supplierId);
+
+
+        return inventoryMovementRepository.findAllByOwnerUser_IdAndProduct_Id(productLong, supplierUUID);
+        // return inventoryMovementRepository.findAll();
+
+    }
+
+    public InventoryMovement findMovementById(long movementId){
+        var foundMovement = inventoryMovementRepository.findById(movementId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movement not found"));
+
+        return foundMovement;
     }
 
     public InventoryMovement updateCountInventory(InventoryMovementCreateDTO payload,long productId, String userId){
@@ -35,7 +76,7 @@ public class InventoryMovementService{
         var userUUID = UUID.fromString(userId);
 
         var product = productRepository.findById(productId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
         var user = userRepository.findById(userUUID)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
@@ -46,7 +87,9 @@ public class InventoryMovementService{
         switch (payload.getType()) {
             case ENTRY:
 
-                product.setQuantity( productQuantity + movementQuantity);
+                var entryQuantity = productQuantity + movementQuantity;
+
+                product.setQuantity(entryQuantity);
 
                 break;
         
@@ -54,19 +97,21 @@ public class InventoryMovementService{
 
                 if(productQuantity < movementQuantity){
                     throw new ResponseStatusException(HttpStatus.CONFLICT);
-                }
+                }   
 
-                product.setQuantity(productQuantity - movementQuantity);
+                var outputQuantity = productQuantity - movementQuantity;
+
+                product.setQuantity(outputQuantity);
 
                 break;
         }
-
-        productRepository.save(product);
-
+        
         InventoryMovement newMovement = modelMapper.map(payload, InventoryMovement.class);
-
+        
         newMovement.setProduct(product);
         newMovement.setOwner_user(user);
+        
+        productRepository.save(product);
 
         return inventoryMovementRepository.save(newMovement);
     }
