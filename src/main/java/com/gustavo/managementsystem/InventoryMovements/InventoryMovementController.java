@@ -1,9 +1,6 @@
 package com.gustavo.managementsystem.InventoryMovements;
 
-import java.lang.annotation.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -39,19 +36,17 @@ public class InventoryMovementController{
     @GetMapping("")
     @PreAuthorize("@authGuard.isSupplier(authentication)")
     public List<InventoryMovement> getMovementsForSupplier(
-        @RequestParam(required = false) long productId,
-        @RequestParam(required = false) int quantity,
+        @RequestParam(required = false) String productId,
         Authentication authentication
         ){
 
         String supplierId = authentication.getName();
 
 
-        return inventoryMovementService.findMovementsBySupplier(productId, quantity, supplierId);
+        return inventoryMovementService.findMovementsBySupplier(productId, supplierId);
     }
 
-    // TA OK
-    // add query params(product, type), this route is for Admin
+
     @GetMapping("/all")
     @PreAuthorize("@authGuard.isAdmin(authentication)")
     public List<InventoryMovement> getAllMovements(

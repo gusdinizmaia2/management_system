@@ -1,7 +1,5 @@
 package com.gustavo.managementsystem.Products;
 
-import com.gustavo.managementsystem.Users.User;
-
 import jakarta.validation.constraints.*;
 import lombok.Data;
 

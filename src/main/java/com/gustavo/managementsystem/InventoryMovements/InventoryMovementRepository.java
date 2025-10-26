@@ -19,9 +19,9 @@ public interface InventoryMovementRepository extends JpaRepository<InventoryMove
     @Query("select mov from inventory_movements mov where mov.product.id = :product_id")
     List<InventoryMovement> findAllByProduct_Id(@Param("product_id") long productId);
 
-    // @Query("select mov from inventory_movements mov where mov.product.id = :product_id" +
-    // " and " + 
-    // "mov.owner_user.id = :owner_user_id")
-    // List<InventoryMovement> findAllByOwnerUser_IdAndProduct_Id(@Param("product_id") long productId,
-    //     @Param("owner_user_id") UUID ownerUserId);
+    @Query("select mov from inventory_movements mov where mov.product.id = :product_id" +
+    " and " + 
+    "mov.owner_user.id = :owner_user_id")
+    List<InventoryMovement> findAllByOwnerUser_IdAndProduct_Id(@Param("product_id") long productId,
+        @Param("owner_user_id") UUID ownerUserId);
 }

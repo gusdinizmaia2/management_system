@@ -1,6 +1,5 @@
 package com.gustavo.managementsystem.InventoryMovements;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -27,11 +26,17 @@ public class InventoryMovementService{
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<InventoryMovement> findMovementsBySupplier(long productId, int quantity, String supplierId){
+    public List<InventoryMovement> findMovementsBySupplier(String productId, String supplierId){
 
         var supplierUUID = UUID.fromString(supplierId);
 
-        return inventoryMovementRepository.findAll();
+        if(productId == null){
+            return inventoryMovementRepository.findAllByOwnerUser_Id(supplierUUID);
+        }
+
+        long productLong = Long.parseLong(productId);
+
+        return inventoryMovementRepository.findAllByOwnerUser_IdAndProduct_Id(productLong, supplierUUID);
     }
 
     public List<InventoryMovement> findAllMovements(String productId, String supplierId){
@@ -54,8 +59,8 @@ public class InventoryMovementService{
         UUID supplierUUID = UUID.fromString(supplierId);
 
 
-        // return inventoryMovementRepository.findAllByOwnerUser_IdAndProduct_Id(productId, supplierId);
-        return inventoryMovementRepository.findAll();
+        return inventoryMovementRepository.findAllByOwnerUser_IdAndProduct_Id(productLong, supplierUUID);
+        // return inventoryMovementRepository.findAll();
 
     }
 
