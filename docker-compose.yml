@@ -1,0 +1,71 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: management_app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/managementdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRINGDOC_API_DOCS_PATH: /docs/api
+      SPRINGDOC_SWAGGER_UI_PATH: /docs/swagger-ui.html
+    depends_on:
+      - db
+    networks:
+      - management_network
+
+  # ================================
+  # 🐘 Banco de Dados PostgreSQL
+  # ================================
+  db:
+    image: postgres:17.6
+    container_name: management_system_postgres
+    restart: always
+  
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 241001
+      POSTGRES_DB: management_system
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # ================================
+  # 🧰 pgAdmin (interface web pro banco)
+  # ================================
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@mail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - management_network
+# ================================
+# 📦 Volumes (persistência)
+# ================================
+volumes:
+  postgres_data:
+
+# ================================
+# 🌐 Rede interna
+# ================================
+networks:
+  backend:
+    driver: bridge
