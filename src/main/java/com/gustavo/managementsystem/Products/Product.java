@@ -38,9 +38,18 @@ public class Product {
     @JsonIgnore
     private List<InventoryMovement> inventory_movements;
 
+    public long getId(){
+        return this.id;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
     public User getSupplier(){
         return this.supplier;
     }
+
 
     public void setPrice(double price){
         this.price = price;
