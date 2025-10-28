@@ -46,7 +46,7 @@ public class AuthGuard {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        var userOwner = product.get().getSupplier().getUserId().toString();
+        var userOwner = product.get().getSupplier().getId().toString();
 
         boolean isOwner = userOwner.equals(userId);
 

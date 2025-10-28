@@ -1,7 +1,8 @@
 package com.gustavo.managementsystem.Users;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gustavo.managementsystem.InventoryMovements.InventoryMovement;
 import com.gustavo.managementsystem.Products.Product;
 
-@Data
+@Getter
+@Setter
 @Entity(name="users")
 public class User {
     @Id
@@ -44,27 +46,4 @@ public class User {
     public boolean isLoginCorrect(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(loginRequest.password(), this.password);
     }
-
-     public UUID getUserId() {
-        return id;
-    }
-    
-    public UserRole getRole() {
-    return role;
-}
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
 }

@@ -1,9 +1,9 @@
 package com.gustavo.managementsystem.InventoryMovements;
 
-import lombok.Data;
+import lombok.Getter;
 import jakarta.validation.constraints.*;
 
-@Data
+@Getter
 public class InventoryMovementCreateDTO{
 
     @NotNull(message = "the attribute 'role' cant to be null")

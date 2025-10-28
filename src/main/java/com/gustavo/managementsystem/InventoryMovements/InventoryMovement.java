@@ -1,6 +1,8 @@
 package com.gustavo.managementsystem.InventoryMovements;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -10,7 +12,8 @@ import com.gustavo.managementsystem.Products.Product;
 import com.gustavo.managementsystem.Users.User;
 
 
-@Data
+@Getter
+@Setter
 @Entity(name= "inventory_movements")
 public class InventoryMovement{
 
@@ -47,26 +50,4 @@ public class InventoryMovement{
     @ManyToOne
     @JoinColumn(name = "product")
     private Product product;
-
-    public int getQuantity(){
-        return this.quantity;
-    }
-    public long getId(){
-        return this.id;
-    }
-    public InventoryMovementTypes getType(){
-        return this.type;
-    }
-    public User getOwnerUser(){
-        return this.owner_user;
-    }
-
-    public void setOwnerUser(User ownerUser){
-        this.owner_user = ownerUser;
-    }
-
-    public void setProduct(Product product){
-        this.product = product;
-    }
-
     }
