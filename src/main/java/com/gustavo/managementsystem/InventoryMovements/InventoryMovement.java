@@ -1,6 +1,5 @@
 package com.gustavo.managementsystem.InventoryMovements;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;

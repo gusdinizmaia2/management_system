@@ -83,9 +83,10 @@ public class UserController {
     @DeleteMapping("/{userId}")
     // @PreAuthorize("hasAuthority('SCOPE_ADMIN') || authentication.principal.subject.toString() == #userId.toString()")
     @PreAuthorize("@authGuard.canAccessUser(authentication, #userId)")
-    public void deleteById(@RequestParam UUID userId){
+    public void deleteById(@PathVariable UUID userId){
 
         userService.deleteUser(userId);
+        // return ResponseStatus.class;
     }
 
 
