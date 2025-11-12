@@ -48,10 +48,19 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .anyRequest().authenticated())
-                        // .anyRequest().permitAll())
+            .requestMatchers(HttpMethod.POST, "/users").permitAll()
+            .requestMatchers(HttpMethod.POST, "/login").permitAll()
+            .requestMatchers(
+                "/docs/**",
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/v3/api-docs.yaml",
+                "/swagger-resources/**",
+                "/webjars/**",
+                "/docs/api",
+                "/docs/swagger-ui"
+                ).permitAll()
+                .anyRequest().authenticated())
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
             .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
