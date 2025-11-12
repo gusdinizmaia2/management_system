@@ -36,7 +36,7 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: "true"
       SPRINGDOC_API_DOCS_PATH: /docs/api
-      SPRINGDOC_SWAGGER_UI_PATH: /docs/swagger-ui.html
+      SPRINGDOC_SWAGGER_UI_PATH: /docs/swagger-ui
       TZ: Europe/Portugal
     ports:
       - "8080:8080"
@@ -46,17 +46,17 @@ services:
     networks:
       - backend
 
-  swagger-ui:
-    image: swaggerapi/swagger-ui
-    container_name: swagger_ui
-    environment:
-      SWAGGER_JSON: /docs/openapi.json
-    volumes:
-      - ./docs:/docs
-    ports:
-      - "8081:8080"
-    networks:
-      - backend
+  # swagger-ui:
+  #   image: swaggerapi/swagger-ui
+  #   container_name: swagger_ui
+  #   environment:
+  #     SWAGGER_JSON: /docs/openapi.json
+  #   volumes:
+  #     - ./docs:/docs
+  #   ports:
+  #     - "8081:8080"
+  #   networks:
+  #     - backend
   # ================================
   # 🧰 pgAdmin (interface web pro banco)
   # ================================
