@@ -1,9 +1,9 @@
 package com.gustavo.managementsystem.Products;
 
 import jakarta.validation.constraints.*;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class ProductCreateDTO {
     
     @NotNull
@@ -22,7 +22,6 @@ public class ProductCreateDTO {
     @Positive
     @NotNull
     private int quantity;
-
 
     // @Positive
     // @NotBlank

@@ -1,0 +1,80 @@
+  # ================================
+  # 🐘 Banco de Dados PostgreSQL
+  # ================================
+services:
+  db:
+    image: postgres:17.6
+    container_name: management_system_db
+    restart: always
+    environment:
+      POSTGRES_ROOT_HOST: '%'
+      POSTGRES_ROOT_PASSWORD: 241001
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 241001
+      POSTGRES_DB: management_system
+      TZ: Europe/Portugal
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    networks:
+      - backend
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  app:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: management_app
+    # working_dir:
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/management_system
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 241001
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRINGDOC_API_DOCS_PATH: /docs/api
+      SPRINGDOC_SWAGGER_UI_PATH: /docs/swagger-ui
+      TZ: Europe/Portugal
+    ports:
+      - "8080:8080"
+    command: mvn spring-boot:run
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  # swagger-ui:
+  #   image: swaggerapi/swagger-ui
+  #   container_name: swagger_ui
+  #   environment:
+  #     SWAGGER_JSON: /docs/openapi.json
+  #   volumes:
+  #     - ./docs:/docs
+  #   ports:
+  #     - "8081:8080"
+  #   networks:
+  #     - backend
+  # ================================
+  # 🧰 pgAdmin (interface web pro banco)
+  # ================================
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@mail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+    driver: bridge

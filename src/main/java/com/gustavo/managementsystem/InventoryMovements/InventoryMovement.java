@@ -1,6 +1,7 @@
 package com.gustavo.managementsystem.InventoryMovements;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,8 @@ import com.gustavo.managementsystem.Products.Product;
 import com.gustavo.managementsystem.Users.User;
 
 
-@Data
+@Getter
+@Setter
 @Entity(name= "inventory_movements")
 public class InventoryMovement{
 
@@ -47,5 +49,4 @@ public class InventoryMovement{
     @ManyToOne
     @JoinColumn(name = "product")
     private Product product;
-
     }

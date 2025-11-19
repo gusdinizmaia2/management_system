@@ -80,7 +80,6 @@ public class ProductController {
 
     @PatchMapping("/{productId}")
     @PreAuthorize("@authGuard.isSupplierOwner(authentication, #productId)")
-
     public Optional<Product> patchProduct(@PathVariable Long productId,@Valid @RequestBody Map<String,String> payload){
 
         return productService.updateProduct(productId, payload);
@@ -88,7 +87,6 @@ public class ProductController {
 
     @DeleteMapping("/{productId}")
     @PreAuthorize("@authGuard.isSupplierOwner(authentication, #productId)")
-
     public void deleteProduct(@PathVariable Long productId){
 
         productService.removeProduct(productId);
