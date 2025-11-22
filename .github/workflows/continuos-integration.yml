@@ -37,7 +37,7 @@ jobs:
         cache: maven
         
     - name: Build Application JAR
-      run: docker build -t managementsystem .
+      run: docker build -t managementsystem-app:latest .
 
     - name: Docker Compose BUILD
       run: docker compose build
