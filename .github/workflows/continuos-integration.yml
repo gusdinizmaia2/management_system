@@ -43,7 +43,7 @@ jobs:
       run: docker compose build
 
     - name: Push to Docker Hub Container Registry
-      run: 
+      run: |
         docker tag managementsystem-app:latest ${{ secrets.DOCKER_USERNAME }}/managementsystem-app:latest 
         docker tag managementsystem-app:latest ${{ secrets.DOCKER_USERNAME }}/managementsystem-app:${{ github.run_id }}
 
