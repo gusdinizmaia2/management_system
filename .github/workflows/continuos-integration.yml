@@ -44,7 +44,9 @@ jobs:
 
     - name: Push to Docker Hub Container Registry
       run: 
-        docker tag ${{ secrets.DOCKER_USERNAME }}/managementsystem-app:latest ${{ secrets.DOCKER_USERNAME }}/managementsystem-app:${{ github.run_id }}
-        
-        docker push ${{ secrets.DOCKER_USERNAME }}/managementsystem-app:${{ github.run_id}}
+        docker tag managementsystem-app:latest ${{ secrets.DOCKER_USERNAME }}/managementsystem-app:latest 
+        docker tag managementsystem-app:latest ${{ secrets.DOCKER_USERNAME }}/managementsystem-app:${{ github.run_id }}
+
         docker push ${{ secrets.DOCKER_USERNAME }}/managementsystem-app:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/managementsystem-app:${{ github.run_id}}
+
