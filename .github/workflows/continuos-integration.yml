@@ -38,7 +38,7 @@ jobs:
         
     - name: Build Application JAR
       working-directory: ./managementsystem
-      run: mvn clean package
+      run: docker build -t managementsystem .
 
     - name: Docker Compose BUILD
       working-directory: ./managementsystem
