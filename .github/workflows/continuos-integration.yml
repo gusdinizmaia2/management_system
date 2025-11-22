@@ -37,11 +37,9 @@ jobs:
         cache: maven
         
     - name: Build Application JAR
-      working-directory: ./managementsystem
       run: docker build -t managementsystem .
 
     - name: Docker Compose BUILD
-      working-directory: ./managementsystem
       run: docker compose build
 
     - name: Push to Docker Hub Container Registry
