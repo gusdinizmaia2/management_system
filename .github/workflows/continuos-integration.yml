@@ -40,7 +40,7 @@ jobs:
       run: docker build -t managementsystem-app:latest .
 
     - name: Docker Compose BUILD
-      run: docker compose build
+      run: docker compose -f docker-compose.prod.yml build
 
     - name: Push to Docker Hub Container Registry
       run: |
