@@ -3,7 +3,6 @@
   # ================================
 services:
   db:
-    env_file: ".env"
     image: postgres:17.6
     container_name: management_system_db
     restart: always
@@ -20,21 +19,16 @@ services:
       - postgres_data:/var/lib/postgresql/data
   app:
     restart: always
-    env_file: ".env"
+    # image: 970850578559.dkr.ecr.eu-north-1.amazonaws.com/managementsystem-ecr:latest
     build:
       context: .
       dockerfile: Dockerfile
     container_name: management_system_app
-    # working_dir:
     environment:
-      SPRING_PROFILES_ACTIVE: ${DB_USERNAME}
-      SPRING_DATASOURCE_URL: ${DB_URL}
-      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_SHOW_SQL: "true"
-      SPRINGDOC_API_DOCS_PATH: /docs/api
-      SPRINGDOC_SWAGGER_UI_PATH: /docs/swagger-ui
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
       FILE_UPLOAD_DIR: ${FILE_UPLOAD_DIR}
       TZ: Europe/Portugal
     ports:
