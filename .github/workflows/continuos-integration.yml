@@ -41,7 +41,15 @@ jobs:
 
     - name: Docker Compose BUILD
       run: docker compose -f docker-compose.prod.yml build
-
+      env:
+        DB_URL: ${{ secrets.DB_URL }}
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_PORT: ${{ secrets.DB_PORT }}
+        FILE_UPLOAD_DIR: ${{ secrets.FILE_UPLOAD_DIR }}
+        APP_PORT: ${{ secrets.APP_PORT }}
+        
     - name: Push to Docker Hub Container Registry
       run: |
         docker tag managementsystem-app:latest ${{ secrets.DOCKER_USERNAME }}/managementsystem-app:latest 
