@@ -3,9 +3,13 @@
 ## 📞 Contact
 
 **Developer:** Gustavo Maia - Full Stack Developer | Front-End | Back-End
+
 **Email:** gustavodiniz37@hotmail.com
+
 **Portfolio:** https://portfolio-gusdinizmaia.vercel.app 
+
 **Linkedin**: https://www.linkedin.com/in/gustavodinizm/
+
 **Project Link:** https://github.com/gusdinizmaia2/management_system
 
 ## 🌟 Overview
