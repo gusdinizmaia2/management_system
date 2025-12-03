@@ -12,6 +12,10 @@
 
 **Project Link:** https://github.com/gusdinizmaia2/management_system
 
+**API LINK**: lb-managementsystem-ecs-1673708086.eu-north-1.elb.amazonaws.com
+
+**DOC LINK**: lb-managementsystem-ecs-1673708086.eu-north-1.elb.amazonaws.com/docs/swagger-ui
+
 ## 🌟 Overview
 
 A comprehensive and scalable **Stock Management System API** built with Spring Boot, featuring advanced inventory control, supplier management, transaction tracking, and analytical reporting. This production-ready solution demonstrates modern backend architecture with enterprise-grade security and cloud deployment.
