@@ -12,9 +12,9 @@
 
 **Project Link:** https://github.com/gusdinizmaia2/management_system
 
-**API LINK**: lb-managementsystem-ecs-1673708086.eu-north-1.elb.amazonaws.com
+**API LINK**: http://lb-managementsystem-ecs-1673708086.eu-north-1.elb.amazonaws.com
 
-**DOC LINK**: lb-managementsystem-ecs-1673708086.eu-north-1.elb.amazonaws.com/docs/swagger-ui
+**DOC LINK**: http://lb-managementsystem-ecs-1673708086.eu-north-1.elb.amazonaws.com/docs/swagger-ui
 
 ## 🌟 Overview
 
